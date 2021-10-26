@@ -62,7 +62,7 @@ def fetch_new_jobs():
 # Main area of the code.
 def jobhunt(cursor):
     # Fetch jobs from website
-    jobpage = fetch_new_jobs()  # Gets github website and holds the json data in it as a list
+    jobpage = fetch_new_jobs()  # Gets API website and holds the json data in it as a list
     # use below print statement to view list in json format
     # print(jobpage)
     add_or_delete_job(jobpage, cursor)
@@ -93,7 +93,7 @@ def main():
     create_tables(cursor)
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
-        jobhunt(cursor)  # arg_dict is argument dictionary,
+        jobhunt(cursor)
         time.sleep(3600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
