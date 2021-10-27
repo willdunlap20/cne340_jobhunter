@@ -2,7 +2,7 @@ import mysql.connector
 import time
 import json
 import requests
-from datetime import datetime
+from datetime import date
 import html2text
 
 
