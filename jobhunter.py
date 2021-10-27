@@ -34,6 +34,9 @@ def query_sql(cursor, query):
 def add_new_job(cursor, jobdetails):
     # extract all required columns
     description = html2text.html2text(jobdetails['description'])
+    date = jobdetails['publication_date'][0:10]
+    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date))
      # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
     return query_sql(cursor, query)
 
@@ -51,7 +54,7 @@ def delete_job(cursor, jobdetails):
     return query_sql(cursor, query)
 
 
-# Grab new jobs from a website, Parses JSON code and inserts the data into a list of dictionaries
+# Grab new jobs from a website, Parses JSON code and inserts the data into a list of dictionaries do not need to edit
 def fetch_new_jobs():
     query = requests.get("https://remotive.io/api/remote-jobs")
     datas = json.loads(query.text)
