@@ -77,7 +77,7 @@ def add_or_delete_job(jobpage, cursor):
         # Add in your code here to check if the job already exists in the DB
         check_if_job_exists(cursor, jobdetails)
         is_job_found = len(
-            cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
+        cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
 
         else:
