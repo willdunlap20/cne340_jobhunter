@@ -62,7 +62,7 @@ def fetch_new_jobs():
     return datas
 
 
-# Main area of the code.
+# Main area of the code. Should not need to edit
 def jobhunt(cursor):
     # Fetch jobs from website
     jobpage = fetch_new_jobs()  # Gets API website and holds the json data in it as a list
