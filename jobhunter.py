@@ -97,7 +97,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
-        time.sleep(3600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
+        time.sleep(21600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
 # Sleep does a rough cycle count, system is not entirely accurate
