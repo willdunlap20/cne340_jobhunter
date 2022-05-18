@@ -2,7 +2,7 @@ import mysql.connector
 import time
 import json
 import requests
-from datetime import datetime
+from datetime import date
 import html2text
 
 
@@ -34,6 +34,9 @@ def query_sql(cursor, query):
 def add_new_job(cursor, jobdetails):
     # extract all required columns
     description = html2text.html2text(jobdetails['description'])
+    date = jobdetails['publication_date'][0:10]
+    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date))
      # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
     return query_sql(cursor, query)
 
@@ -51,7 +54,7 @@ def delete_job(cursor, jobdetails):
     return query_sql(cursor, query)
 
 
-# Grab new jobs from a website, Parses JSON code and inserts the data into a list of dictionaries
+# Grab new jobs from a website, Parses JSON code and inserts the data into a list of dictionaries do not need to edit
 def fetch_new_jobs():
     query = requests.get("https://remotive.io/api/remote-jobs")
     datas = json.loads(query.text)
@@ -59,7 +62,7 @@ def fetch_new_jobs():
     return datas
 
 
-# Main area of the code.
+# Main area of the code. Should not need to edit
 def jobhunt(cursor):
     # Fetch jobs from website
     jobpage = fetch_new_jobs()  # Gets API website and holds the json data in it as a list
@@ -74,7 +77,7 @@ def add_or_delete_job(jobpage, cursor):
         # Add in your code here to check if the job already exists in the DB
         check_if_job_exists(cursor, jobdetails)
         is_job_found = len(
-            cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
+        cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
 
         else:
@@ -94,7 +97,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
-        time.sleep(3600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
+        time.sleep(21600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
 # Sleep does a rough cycle count, system is not entirely accurate
