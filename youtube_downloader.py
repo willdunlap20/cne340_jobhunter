@@ -102,7 +102,7 @@ def Download():
     # Getting all the available streams of the
     # youtube video and selecting the first
     # from the
-    videoStream = getVideo.streams.filter(res="720p").first()
+    videoStream = getVideo.streams.filter(res="1080p").first()
     print(videoStream)
 
     # Downloading the video to destination
