@@ -29,13 +29,13 @@ def query_sql(cursor, query):
 # Add a new job
 def add_new_job(cursor, jobdetails):
     description = html2text.html2text(jobdetails['description'])
-    date = jobdetails['publication_date'][0:10]
+    created_at = jobdetails['publication_date'][0:10]
     job_id = jobdetails['id']
     title = jobdetails['title']
     company = jobdetails['company_name']
     url = jobdetails['url']
-    query = "INSERT INTO jobs (Job_id, Title, Company, Url, Description) VALUES (%s, %s, %s, %s, %s)"
-    cursor.execute(query, (job_id, title, company, url, description))
+    query = "INSERT INTO jobs (Job_id, Title, Company, Url, Description, Created_at) VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(query, (job_id, title, company, url, description, created_at))
     return cursor
 
 
@@ -77,6 +77,10 @@ def add_or_delete_job(jobpage, cursor):
         else:
             print(f"Job already exists: {jobdetails['title']} at {jobdetails['company_name']}")
 
+def remove_old_jobs(cursor, conn):
+    cursor.execute("DELETE FROM jobs WHERE Created_at < CURDATE() - INTERVAL 14 DAY")
+    conn.commit()  # Ensure changes are saved
+    print(f"Removed {cursor.rowcount} old jobs")
 
 # Setup portion of the program. Take arguments and set up the script
 def main():
@@ -85,8 +89,9 @@ def main():
     cursor = conn.cursor()
     create_tables(cursor)
 
-    while (1):  # Infinite loop for background scraping
+    while True:  # Infinite loop for background scraping
         jobhunt(cursor)
+        remove_old_jobs(cursor, conn)  # Call the cleanup function
         time.sleep(14400)  # Sleep for 6 hours (21600 seconds) to avoid hitting API limits
 
 
