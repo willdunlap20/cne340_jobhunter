@@ -34,7 +34,7 @@ def add_new_job(cursor, jobdetails):
     title = jobdetails['title']
     company = jobdetails['company_name']
     url = jobdetails['url']
-    query = "INSERT INTO jobs (Job_id, Title, Company, Url, Description, Created_at) VALUES (%s, %s, %s, %s, %s)"
+    query = "INSERT INTO jobs (Job_id, Title, Company, Url, Description, Created_at) VALUES (%s, %s, %s, %s, %s, %s)"
     cursor.execute(query, (job_id, title, company, url, description, created_at))
     return cursor
 
