@@ -10,13 +10,14 @@ import html2text
 def connect_to_sql():
     conn = mysql.connector.connect(user='root', password='',
                                    host='localhost', database='job_hunter')
+    conn.autocommit = True
     return conn
 
 
 # Create the table structure
 def create_tables(cursor):
     cursor.execute('''CREATE TABLE IF NOT EXISTS jobs (id INT PRIMARY KEY auto_increment, Job_id varchar(50), 
-    company varchar(300), Created_at DATE, url varchar(30000), Title LONGBLOB, Description LONGBLOB); ''')
+    company varchar(300), Created_at DATE, url varchar(30000), Title VARCHAR(500), Description TEXT); ''')
 
 
 # Query the database.
@@ -51,7 +52,6 @@ def check_if_job_exists(cursor, jobdetails):
 def delete_job(cursor, jobdetails):
     query = "DELETE FROM jobs WHERE Job_id = %s"
     return query_sql(cursor, query, (jobdetails["id"],))
-
 
 # Grab new jobs from a website, Parses JSON code and inserts the data into a list of dictionaries do not need to edit
 def fetch_new_jobs():
